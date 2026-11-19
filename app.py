@@ -163,6 +163,7 @@ def analyse_complaint(complaint):
     return category, department, priority
 
 
+
 def ask_gemini(question):
     if not client:
         return (
@@ -174,18 +175,36 @@ def ask_gemini(question):
         response = client.models.generate_content(
             model="gemini-3.5-flash-lite",
             contents=(
-                "You are CampusConnect AI, a helpful college campus "
-                "assistant. Answer clearly and politely. Help with "
-                "campus services, student support and general questions. "
-                "Never invent official college policies, contacts, "
-                "timetables or facilities. If you do not know something, "
-                "ask the student to contact the college administration.\n\n"
+                "You are CampusConnect AI, a helpful assistant "
+                "for the CampusConnect AI student support platform. "
+                "Answer clearly and politely in simple language.\n\n"
+
+                "YOUR FEATURES:\n"
+                "1. Student Portal: Students can submit complaints.\n"
+                "2. Complaint Tracking: Students can track complaints "
+                "using their Ticket ID.\n"
+                "3. AI Assistance: Help students with campus problems.\n\n"
+
+                "INSTRUCTIONS:\n"
+                "- Give helpful solutions to student problems.\n"
+                "- Recommend Student Portal → Submit Complaint "
+                "when students report campus issues.\n"
+                "- Explain that students can track complaints "
+                "using their Ticket ID.\n"
+                "- Never claim that you submitted a complaint.\n"
+                "- Never invent official college policies, contacts "
+                "or timetables.\n"
+                "- Keep answers friendly and concise.\n\n"
+
                 + question
             )
         )
+
         return response.text or "I could not generate a response."
+
     except Exception as e:
         return f"Gemini Error: {str(e)}"
+
 
 create_table()
 
